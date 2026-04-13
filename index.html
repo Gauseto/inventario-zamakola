@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Inventario" />
+  <meta name="theme-color" content="#1e3a5f" />
+  <link rel="manifest" href="./manifest.json" />
+  <link rel="apple-touch-icon" href="./icon-192.png" />
+  <title>Inventario Zamakola</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.2/babel.min.js"></script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f0f4f8; min-height: 100vh; overflow-x: hidden; }
+    :root {
+      --azul: #1e3a5f; --azul-claro: #2e5490;
+      --rojo: #c1121f; --naranja: #e07c24;
+      --gris: #6c757d; --fondo: #f0f4f8;
+    }
+    .app { display: flex; flex-direction: column; min-height: 100vh; max-width: 480px; margin: 0 auto; background: var(--fondo); position: relative; }
+
+    /* HEADER */
+    .header { background: var(--azul); color: white; padding: 52px 20px 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.2); }
+    .header-title { font-size: 20px; font-weight: 700; }
+    .header-sub { font-size: 12px; opacity: 0.7; margin-top: 2px; }
+
+    /* TABS */
+    .tabs { display: flex; background: white; border-bottom: 1px solid #dde2e8; position: sticky; top: 0; z-index: 99; }
+    .tab { flex: 1; padding: 14px 8px; text-align: center; font-size: 14px; font-weight: 600; color: var(--gris); cursor: pointer; border-bottom: 3px solid transparent; user-select: none; }
+    .tab.active { color: var(--azul); border-bottom-color: var(--azul); }
+    .tab-icon { font-size: 20px; display: block; margin-bottom: 2px; }
+    .tab-badge { display: inline-block; background: #e07c24; color: white; border-radius: 10px; font-size: 10px; padding: 1px 6px; margin-left: 4px; font-weight: 700; vertical-align: middle; }
+
+    /* CONTENT */
+    .content { flex: 1; padding: 14px 12px 100px; overflow-y: auto; }
+
+    /* SEARCH */
+    .search-input { width: 100%; padding: 10px 16px; border-radius: 12px; border: 1.5px solid #dde2e8; font-size: 14px; background: white; outline: none; color: #222; margin-bottom: 14px; }
+    .search-input:focus { border-color: var(--azul); }
+
+    /* STATS */
+    .stats-bar { display: flex; gap: 8px; margin-bottom: 14px; }
+    .stat-chip { flex: 1; background: white; border-radius: 10px; padding: 10px 8px; text-align: center; border: 1.5px solid #e8edf3; }
+    .stat-num { font-size: 20px; font-weight: 800; color: var(--azul); }
+    .stat-lbl { font-size: 10px; color: #8899aa; font-weight: 500; text-transform: uppercase; letter-spacing: 0.3px; margin-top: 1px; }
+    .stat-chip.warn { border-color: #f4c26a; }
+    .stat-chip.warn .stat-num { color: #c77700; }
+
+    /* EMPTY */
+    .empty { text-align: center; padding: 60px 20px; }
+    .empty-icon { font-size: 52px; margin-bottom: 12px; }
+    .empty-text { font-size: 15px; font-weight: 600; color: #889; margin-bottom: 6px; }
+    .empty-sub { font-size: 13px; color: #aab; }
+
+    /* PRODUCT CARD */
+    .product-card { background: white; border-radius: 14px; padding: 14px 16px; margin-bottom: 10px; box-shadow: 0 1px 4px rgba(0,0,0,0.07); border: 1.5px solid #e8edf3; }
+    .product-card.low-stock { border-color: #f4c26a; }
+    .product-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px; }
+    .product-name { font-size: 15px; font-weight: 700; color: #1a2738; flex: 1; padding-right: 8px; }
+    .product-meta { display: flex; align-items: center; gap: 6px; margin-top: 4px; flex-wrap: wrap; }
+    .product-category { font-size: 11px; background: #eef2f7; color: #5a7090; padding: 2px 8px; border-radius: 6px; font-weight: 500; }
+    .low-badge { font-size: 11px; color: #c77700; background: #fff8e1; border-radius: 6px; padding: 2px 8px; font-weight: 600; }
+    .product-actions-top { display: flex; gap: 6px; }
+    .btn-icon { border: none; border-radius: 8px; padding: 7px 10px; cursor: pointer; font-size: 16px; touch-action: manipulation; transition: transform 0.1s; }
+    .btn-icon:active { transform: scale(0.9); }
+    .btn-transfer { background: #fff3e0; }
+    .btn-delete { background: #fdeaea; }
+    .product-footer { display: flex; align-items: center; }
+    .qty-control { display: flex; align-items: center; gap: 10px; }
+    .qty-btn { width: 36px; height: 36px; border: none; border-radius: 8px; font-size: 22px; cursor: pointer; display: flex; align-items: center; justify-content: center; font-weight: 700; touch-action: manipulation; transition: transform 0.1s; }
+    .qty-btn:active { transform: scale(0.88); }
+    .qty-btn.minus { background: #f0f4f8; color: #1e3a5f; }
+    .qty-btn.plus { background: var(--azul); color: white; }
+    .qty-btn:disabled { opacity: 0.35; }
+    .qty-value { font-size: 22px; font-weight: 800; color: #1a2738; min-width: 34px; text-align: center; }
+    .qty-label { font-size: 11px; color: #8899aa; }
+
+    /* FAB */
+    .fab { position: fixed; bottom: 24px; right: calc(50% - 228px); background: var(--azul); color: white; border: none; border-radius: 28px; padding: 15px 26px; font-size: 15px; font-weight: 700; cursor: pointer; box-shadow: 0 4px 18px rgba(30,58,95,0.45); display: flex; align-items: center; gap: 8px; touch-action: manipulation; transition: transform 0.1s; z-index: 200; }
+    .fab:active { transform: scale(0.95); }
+    @media (max-width: 480px) { .fab { right: 20px; } }
+
+    /* MODAL */
+    .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 300; display: flex; align-items: flex-end; justify-content: center; animation: fadeIn 0.15s; }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    .modal { background: white; border-radius: 24px 24px 0 0; padding: 20px 20px 40px; width: 100%; max-width: 480px; animation: slideUp 0.22s cubic-bezier(0.4,0,0.2,1); max-height: 92vh; overflow-y: auto; }
+    @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
+    .modal-handle { width: 40px; height: 4px; background: #dde2e8; border-radius: 2px; margin: 0 auto 18px; }
+    .modal-title { font-size: 18px; font-weight: 800; color: #1a2738; margin-bottom: 18px; }
+    .form-group { margin-bottom: 14px; }
+    .form-label { font-size: 13px; font-weight: 600; color: #5a7090; margin-bottom: 5px; display: block; }
+    .form-input { width: 100%; padding: 12px 14px; border-radius: 12px; border: 1.5px solid #dde2e8; font-size: 15px; outline: none; color: #1a2738; background: #fafbfc; }
+    .form-input:focus { border-color: var(--azul); background: white; }
+    .form-select { width: 100%; padding: 12px 14px; border-radius: 12px; border: 1.5px solid #dde2e8; font-size: 15px; outline: none; color: #1a2738; background: #fafbfc; -webkit-appearance: none; }
+    .form-error { color: #c1121f; font-size: 12px; margin-top: 4px; }
+    .qty-picker { display: flex; align-items: center; gap: 16px; }
+    .qty-picker-btn { width: 44px; height: 44px; border-radius: 12px; border: none; font-size: 24px; cursor: pointer; font-weight: 700; display: flex; align-items: center; justify-content: center; touch-action: manipulation; }
+    .qty-picker-btn.minus { background: #f0f4f8; color: #1e3a5f; }
+    .qty-picker-btn.plus { background: var(--azul); color: white; }
+    .qty-picker-val { font-size: 24px; font-weight: 800; color: #1a2738; min-width: 38px; text-align: center; }
+    .btn-row { display: flex; gap: 10px; margin-top: 8px; }
+    .btn-primary { flex: 1; background: var(--azul); color: white; border: none; border-radius: 14px; padding: 15px; font-size: 16px; font-weight: 700; cursor: pointer; touch-action: manipulation; }
+    .btn-primary:active { opacity: 0.85; }
+    .btn-secondary { flex: 1; background: #f0f4f8; color: #5a7090; border: none; border-radius: 14px; padding: 15px; font-size: 16px; font-weight: 600; cursor: pointer; }
+    .transfer-info { background: #fff8e1; border-radius: 12px; padding: 12px 14px; margin-bottom: 14px; border: 1px solid #ffe082; font-size: 13px; color: #8a6200; line-height: 1.5; }
+    .transfer-arrow { text-align: center; font-size: 28px; margin: 6px 0 12px; }
+    .confirm-icon { text-align: center; font-size: 46px; margin-bottom: 8px; }
+    .confirm-text { text-align: center; font-size: 14px; color: #5a7090; margin-bottom: 18px; line-height: 1.5; }
+
+    /* TOAST */
+    .toast { position: fixed; top: 60px; left: 50%; transform: translateX(-50%); background: #1a2738; color: white; padding: 10px 20px; border-radius: 20px; font-size: 13px; font-weight: 600; z-index: 500; box-shadow: 0 4px 16px rgba(0,0,0,0.25); white-space: nowrap; animation: toastIn 0.2s; }
+    @keyframes toastIn { from { opacity: 0; transform: translateX(-50%) translateY(-8px); } to { opacity: 1; transform: translateX(-50%) translateY(0); } }
+
+    /* INSTALL BANNER */
+    .install-banner { background: linear-gradient(135deg, #1e3a5f, #2e5490); color: white; padding: 12px 16px; display: flex; align-items: center; gap: 12px; cursor: pointer; }
+    .install-banner-text { flex: 1; font-size: 13px; line-height: 1.4; }
+    .install-banner-text strong { display: block; font-size: 14px; }
+    .install-banner-btn { background: white; color: var(--azul); border: none; border-radius: 8px; padding: 7px 14px; font-size: 13px; font-weight: 700; cursor: pointer; white-space: nowrap; touch-action: manipulation; }
+    .install-banner-close { background: none; border: none; color: white; font-size: 18px; cursor: pointer; opacity: 0.7; padding: 4px; }
+  </style>
+</head>
+<body>
+<div id="root"></div>
+
+<script type="text/babel">
+const { useState, useEffect, useRef } = React;
+
+const STORAGE_KEY = 'inventario_zamakola_v2';
+const CATEGORIAS = ['Limpieza', 'Alimentación', 'Higiene', 'Oficina', 'Botiquín', 'Ropa/Textil', 'Otro'];
+
+function loadData() {
+  try { const r = localStorage.getItem(STORAGE_KEY); if (r) return JSON.parse(r); } catch(e) {}
+  return { almacen: [], residencia: [] };
+}
+function saveData(d) { try { localStorage.setItem(STORAGE_KEY, JSON.stringify(d)); } catch(e) {} }
+function uid() { return Date.now().toString(36) + Math.random().toString(36).slice(2,7); }
+
+// ── Registro del Service Worker ──────────────────────────────────────────────
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('./sw.js').catch(() => {});
+  });
+}
+
+// ── Toast ─────────────────────────────────────────────────────────────────────
+function Toast({ msg, onDone }) {
+  useEffect(() => { const t = setTimeout(onDone, 2400); return () => clearTimeout(t); }, []);
+  return <div className="toast">{msg}</div>;
+}
+
+// ── Tarjeta de producto ───────────────────────────────────────────────────────
+function ProductCard({ product, zona, onDelete, onTransfer, onQtyChange }) {
+  const isLow = product.cantidad > 0 && product.cantidad <= 2;
+  const isEmpty = product.cantidad === 0;
+  return (
+    <div className={`product-card${isLow || isEmpty ? ' low-stock' : ''}`}>
+      <div className="product-header">
+        <div style={{flex:1}}>
+          <div className="product-name">{product.nombre}</div>
+          <div className="product-meta">
+            <span className="product-category">{product.categoria}</span>
+            {(isLow || isEmpty) && <span className="low-badge">{isEmpty ? '⚠️ Sin stock' : '⚠️ Stock bajo'}</span>}
+          </div>
+        </div>
+        <div className="product-actions-top">
+          {zona === 'almacen' && (
+            <button className="btn-icon btn-transfer" onClick={() => onTransfer(product)}>📤</button>
+          )}
+          <button className="btn-icon btn-delete" onClick={() => onDelete(product)}>🗑️</button>
+        </div>
+      </div>
+      <div className="product-footer">
+        <div className="qty-control">
+          <button className="qty-btn minus" onClick={() => onQtyChange(product, -1)} disabled={product.cantidad <= 0}>−</button>
+          <div style={{textAlign:'center'}}>
+            <div className="qty-value">{product.cantidad}</div>
+            <div className="qty-label">unidades</div>
+          </div>
+          <button className="qty-btn plus" onClick={() => onQtyChange(product, 1)}>+</button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ── Modal: nuevo producto ─────────────────────────────────────────────────────
+function ModalNuevo({ zona, onClose, onSave }) {
+  const [nombre, setNombre] = useState('');
+  const [categoria, setCategoria] = useState(CATEGORIAS[0]);
+  const [cantidad, setCantidad] = useState(1);
+  const [error, setError] = useState('');
+  function save() {
+    if (!nombre.trim()) { setError('Escribe el nombre del producto'); return; }
+    onSave({ nombre: nombre.trim(), categoria, cantidad });
+  }
+  return (
+    <div className="modal-overlay" onClick={e => e.target === e.currentTarget && onClose()}>
+      <div className="modal">
+        <div className="modal-handle" />
+        <div className="modal-title">Nuevo producto — {zona === 'almacen' ? '🏭 Almacén' : '🏠 Residencia'}</div>
+        <div className="form-group">
+          <label className="form-label">Nombre *</label>
+          <input className="form-input" placeholder="Ej: Papel higiénico" value={nombre}
+            onChange={e => { setNombre(e.target.value); setError(''); }} autoFocus />
+          {error && <div className="form-error">{error}</div>}
+        </div>
+        <div className="form-group">
+          <label className="form-label">Categoría</label>
+          <select className="form-select" value={categoria} onChange={e => setCategoria(e.target.value)}>
+            {CATEGORIAS.map(c => <option key={c}>{c}</option>)}
+          </select>
+        </div>
+        <div className="form-group">
+          <label className="form-label">Cantidad inicial</label>
+          <div className="qty-picker">
+            <button className="qty-picker-btn minus" onClick={() => setCantidad(q => Math.max(0, q-1))}>−</button>
+            <span className="qty-picker-val">{cantidad}</span>
+            <button className="qty-picker-btn plus" onClick={() => setCantidad(q => q+1)}>+</button>
+          </div>
+        </div>
+        <div className="btn-row">
+          <button className="btn-secondary" onClick={onClose}>Cancelar</button>
+          <button className="btn-primary" onClick={save}>Guardar</button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ── Modal: trasladar ──────────────────────────────────────────────────────────
+function ModalTransferir({ product, onClose, onConfirm }) {
+  const [cantidad, setCantidad] = useState(1);
+  return (
+    <div className="modal-overlay" onClick={e => e.target === e.currentTarget && onClose()}>
+      <div className="modal">
+        <div className="modal-handle" />
+        <div className="modal-title">Trasladar a Residencia</div>
+        <div className="transfer-info">
+          Mover <strong>{product.nombre}</strong> del almacén a la residencia.<br/>
+          Disponible en almacén: <strong>{product.cantidad} ud.</strong>
+        </div>
+        <div className="transfer-arrow">🏭 → 🏠</div>
+        <div className="form-group">
+          <label className="form-label">Unidades a trasladar</label>
+          <div className="qty-picker">
+            <button className="qty-picker-btn minus" onClick={() => setCantidad(q => Math.max(1, q-1))}>−</button>
+            <span className="qty-picker-val">{cantidad}</span>
+            <button className="qty-picker-btn plus" onClick={() => setCantidad(q => Math.min(product.cantidad, q+1))}>+</button>
+          </div>
+        </div>
+        <div className="btn-row">
+          <button className="btn-secondary" onClick={onClose}>Cancelar</button>
+          <button className="btn-primary" style={{background:'#e07c24'}} onClick={() => onConfirm(cantidad)}>Trasladar</button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ── Modal: confirmar eliminar ─────────────────────────────────────────────────
+function ModalConfirmar({ product, onClose, onConfirm }) {
+  return (
+    <div className="modal-overlay" onClick={e => e.target === e.currentTarget && onClose()}>
+      <div className="modal">
+        <div className="modal-handle" />
+        <div className="confirm-icon">🗑️</div>
+        <div className="modal-title" style={{textAlign:'center'}}>Eliminar producto</div>
+        <div className="confirm-text">¿Seguro que quieres eliminar <strong>"{product.nombre}"</strong>? Esta acción no se puede deshacer.</div>
+        <div className="btn-row">
+          <button className="btn-secondary" onClick={onClose}>Cancelar</button>
+          <button className="btn-primary" style={{background:'#c1121f'}} onClick={onConfirm}>Eliminar</button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ── App principal ─────────────────────────────────────────────────────────────
+function App() {
+  const [data, setData] = useState(loadData);
+  const [tab, setTab] = useState('almacen');
+  const [search, setSearch] = useState('');
+  const [modal, setModal] = useState(null);
+  const [selected, setSelected] = useState(null);
+  const [toast, setToast] = useState(null);
+  const [deferredPrompt, setDeferredPrompt] = useState(null);
+  const [showInstall, setShowInstall] = useState(false);
+
+  useEffect(() => { saveData(data); }, [data]);
+
+  // Capturar evento de instalación PWA
+  useEffect(() => {
+    const handler = e => { e.preventDefault(); setDeferredPrompt(e); setShowInstall(true); };
+    window.addEventListener('beforeinstallprompt', handler);
+    return () => window.removeEventListener('beforeinstallprompt', handler);
+  }, []);
+
+  function toast$(msg) { setToast(msg); }
+
+  function closeModal() { setModal(null); setSelected(null); }
+
+  function addProduct(vals) {
+    setData(d => ({ ...d, [tab]: [...d[tab], { id: uid(), ...vals }] }));
+    closeModal();
+    toast$(`✅ ${vals.nombre} añadido`);
+  }
+
+  function deleteProduct() {
+    const { zona, product } = selected;
+    setData(d => ({ ...d, [zona]: d[zona].filter(p => p.id !== product.id) }));
+    closeModal();
+    toast$(`🗑️ ${product.nombre} eliminado`);
+  }
+
+  function changeQty(product, delta) {
+    setData(d => ({
+      ...d,
+      [tab]: d[tab].map(p => p.id === product.id ? { ...p, cantidad: Math.max(0, p.cantidad + delta) } : p)
+    }));
+  }
+
+  function transfer(cantidad) {
+    const { product } = selected;
+    setData(d => {
+      const almacen = d.almacen.map(p => p.id === product.id ? { ...p, cantidad: p.cantidad - cantidad } : p);
+      const existing = d.residencia.find(p => p.nombre.toLowerCase() === product.nombre.toLowerCase());
+      const residencia = existing
+        ? d.residencia.map(p => p.id === existing.id ? { ...p, cantidad: p.cantidad + cantidad } : p)
+        : [...d.residencia, { ...product, id: uid(), cantidad }];
+      return { almacen, residencia };
+    });
+    closeModal();
+    toast$(`📤 ${cantidad} ud. de ${product.nombre} trasladadas`);
+  }
+
+  async function handleInstall() {
+    if (!deferredPrompt) return;
+    deferredPrompt.prompt();
+    const { outcome } = await deferredPrompt.userChoice;
+    if (outcome === 'accepted') setShowInstall(false);
+    setDeferredPrompt(null);
+  }
+
+  const lista = data[tab].filter(p =>
+    p.nombre.toLowerCase().includes(search.toLowerCase()) ||
+    p.categoria.toLowerCase().includes(search.toLowerCase())
+  );
+
+  const stats = {
+    productos: data[tab].length,
+    unidades: data[tab].reduce((s, p) => s + p.cantidad, 0),
+    bajos: data[tab].filter(p => p.cantidad <= 2).length,
+  };
+  const lowAlmacen = data.almacen.filter(p => p.cantidad <= 2).length;
+  const lowResidencia = data.residencia.filter(p => p.cantidad <= 2).length;
+
+  return (
+    <div className="app">
+      <div className="header">
+        <div className="header-title">📦 Inventario Zamakola</div>
+        <div className="header-sub">Gestión de stock</div>
+      </div>
+
+      {showInstall && (
+        <div className="install-banner">
+          <div className="install-banner-text">
+            <strong>Instalar como app</strong>
+            Los datos se guardan en tu móvil
+          </div>
+          <button className="install-banner-btn" onClick={handleInstall}>Instalar</button>
+          <button className="install-banner-close" onClick={() => setShowInstall(false)}>✕</button>
+        </div>
+      )}
+
+      <div className="tabs">
+        <div className={`tab${tab === 'almacen' ? ' active' : ''}`} onClick={() => { setTab('almacen'); setSearch(''); }}>
+          <span className="tab-icon">🏭</span>
+          Almacén
+          {lowAlmacen > 0 && <span className="tab-badge">{lowAlmacen}</span>}
+        </div>
+        <div className={`tab${tab === 'residencia' ? ' active' : ''}`} onClick={() => { setTab('residencia'); setSearch(''); }}>
+          <span className="tab-icon">🏠</span>
+          Residencia
+          {lowResidencia > 0 && <span className="tab-badge">{lowResidencia}</span>}
+        </div>
+      </div>
+
+      <div className="content">
+        <div className="stats-bar">
+          <div className="stat-chip">
+            <div className="stat-num">{stats.productos}</div>
+            <div className="stat-lbl">Productos</div>
+          </div>
+          <div className="stat-chip">
+            <div className="stat-num">{stats.unidades}</div>
+            <div className="stat-lbl">Unidades</div>
+          </div>
+          <div className={`stat-chip${stats.bajos > 0 ? ' warn' : ''}`}>
+            <div className="stat-num">{stats.bajos}</div>
+            <div className="stat-lbl">Stock bajo</div>
+          </div>
+        </div>
+
+        <input className="search-input" placeholder="🔍  Buscar producto..." value={search}
+          onChange={e => setSearch(e.target.value)} />
+
+        {lista.length === 0 ? (
+          <div className="empty">
+            <div className="empty-icon">{search ? '🔍' : tab === 'almacen' ? '🏭' : '🏠'}</div>
+            <div className="empty-text">{search ? 'Sin resultados' : 'Sin productos aún'}</div>
+            <div className="empty-sub">{search ? 'Prueba con otro término' : 'Pulsa «+ Nuevo producto» para empezar'}</div>
+          </div>
+        ) : lista.map(product => (
+          <ProductCard key={product.id} product={product} zona={tab}
+            onDelete={p => { setSelected({ zona: tab, product: p }); setModal('eliminar'); }}
+            onTransfer={p => { setSelected({ zona: tab, product: p }); setModal('transferir'); }}
+            onQtyChange={changeQty}
+          />
+        ))}
+      </div>
+
+      <button className="fab" onClick={() => setModal('nuevo')}>＋ Nuevo producto</button>
+
+      {modal === 'nuevo'      && <ModalNuevo zona={tab} onClose={closeModal} onSave={addProduct} />}
+      {modal === 'transferir' && selected && <ModalTransferir product={selected.product} onClose={closeModal} onConfirm={transfer} />}
+      {modal === 'eliminar'   && selected && <ModalConfirmar product={selected.product} onClose={closeModal} onConfirm={deleteProduct} />}
+      {toast && <Toast msg={toast} onDone={() => setToast(null)} />}
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+</script>
+</body>
+</html>
