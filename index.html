@@ -27,13 +27,13 @@
     /* HEADER */
     .header { background: var(--azul); color: white; padding: 52px 20px 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.2); }
     .header-title { font-size: 20px; font-weight: 700; }
-    .header-sub { font-size: 12px; opacity: 0.7; margin-top: 2px; }
+    .header-sub { font-size: 11px; opacity: 0.7; margin-top: 2px; }
 
     /* TABS */
     .tabs { display: flex; background: white; border-bottom: 1px solid #dde2e8; position: sticky; top: 0; z-index: 99; }
-    .tab { flex: 1; padding: 14px 8px; text-align: center; font-size: 14px; font-weight: 600; color: var(--gris); cursor: pointer; border-bottom: 3px solid transparent; user-select: none; }
+    .tab { flex: 1; padding: 11px 4px; text-align: center; font-size: 12px; font-weight: 600; color: var(--gris); cursor: pointer; border-bottom: 3px solid transparent; user-select: none; }
     .tab.active { color: var(--azul); border-bottom-color: var(--azul); }
-    .tab-icon { font-size: 20px; display: block; margin-bottom: 2px; }
+    .tab-icon { font-size: 18px; display: block; margin-bottom: 2px; }
     .tab-badge { display: inline-block; background: #e07c24; color: white; border-radius: 10px; font-size: 10px; padding: 1px 6px; margin-left: 4px; font-weight: 700; vertical-align: middle; }
 
     /* CONTENT */
@@ -50,6 +50,8 @@
     .stat-lbl { font-size: 10px; color: #8899aa; font-weight: 500; text-transform: uppercase; letter-spacing: 0.3px; margin-top: 1px; }
     .stat-chip.warn { border-color: #f4c26a; }
     .stat-chip.warn .stat-num { color: #c77700; }
+    .stat-chip.rojo .stat-num { color: #c1121f; }
+    .stat-chip.verde .stat-num { color: #2e7d32; }
 
     /* EMPTY */
     .empty { text-align: center; padding: 60px 20px; }
@@ -61,13 +63,15 @@
     .product-card { background: white; border-radius: 14px; padding: 14px 16px; margin-bottom: 10px; box-shadow: 0 1px 4px rgba(0,0,0,0.07); border: 1.5px solid #e8edf3; }
     .product-card.low-stock { border-color: #f4c26a; }
     .product-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px; }
-    .product-name { font-size: 15px; font-weight: 700; color: #1a2738; flex: 1; padding-right: 8px; }
+    .product-name { font-size: 15px; font-weight: 700; color: #1a2738; flex: 1; padding-right: 8px; cursor: pointer; }
     .product-meta { display: flex; align-items: center; gap: 6px; margin-top: 4px; flex-wrap: wrap; }
     .product-category { font-size: 11px; background: #eef2f7; color: #5a7090; padding: 2px 8px; border-radius: 6px; font-weight: 500; }
+    .product-precio { font-size: 11px; color: #5a7090; background: #f0f7ff; padding: 2px 8px; border-radius: 6px; }
     .low-badge { font-size: 11px; color: #c77700; background: #fff8e1; border-radius: 6px; padding: 2px 8px; font-weight: 600; }
     .product-actions-top { display: flex; gap: 6px; }
     .btn-icon { border: none; border-radius: 8px; padding: 7px 10px; cursor: pointer; font-size: 16px; touch-action: manipulation; transition: transform 0.1s; }
     .btn-icon:active { transform: scale(0.9); }
+    .btn-info { background: #e8f4ff; }
     .btn-transfer { background: #fff3e0; }
     .btn-delete { background: #fdeaea; }
     .product-footer { display: flex; align-items: center; }
@@ -79,6 +83,8 @@
     .qty-btn:disabled { opacity: 0.35; }
     .qty-value { font-size: 22px; font-weight: 800; color: #1a2738; min-width: 34px; text-align: center; }
     .qty-label { font-size: 11px; color: #8899aa; }
+    .card-total { margin-left: auto; text-align: right; font-size: 13px; color: #5a7090; font-weight: 600; }
+    .card-total-num { color: var(--azul); font-weight: 800; }
 
     /* FAB */
     .fab { position: fixed; bottom: 24px; right: calc(50% - 228px); background: var(--azul); color: white; border: none; border-radius: 28px; padding: 15px 26px; font-size: 15px; font-weight: 700; cursor: pointer; box-shadow: 0 4px 18px rgba(30,58,95,0.45); display: flex; align-items: center; gap: 8px; touch-action: manipulation; transition: transform 0.1s; z-index: 200; }
@@ -112,12 +118,47 @@
     .confirm-icon { text-align: center; font-size: 46px; margin-bottom: 8px; }
     .confirm-text { text-align: center; font-size: 14px; color: #5a7090; margin-bottom: 18px; line-height: 1.5; }
 
+    /* FICHA MODAL */
+    .ficha-product-name { font-size: 18px; font-weight: 800; color: #1a2738; margin-bottom: 8px; }
+    .ficha-badges { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; margin-bottom: 18px; }
+    .ficha-qty { font-size: 13px; font-weight: 700; color: var(--azul); }
+    .ficha-total-box { background: #f0f7ff; border-radius: 12px; padding: 14px 16px; margin: 4px 0 14px; border: 1px solid #c8ddf5; }
+    .ficha-total-label { font-size: 12px; color: #5a7090; margin-bottom: 4px; }
+    .ficha-total-val { font-size: 26px; font-weight: 800; color: var(--azul); }
+    .ficha-total-sub { font-size: 12px; color: #8899aa; margin-top: 2px; }
+    .ficha-fecha { font-size: 12px; color: #8899aa; margin-bottom: 14px; }
+
+    /* ZONA BADGE */
+    .zona-badge { font-size: 10px; padding: 2px 8px; border-radius: 5px; font-weight: 600; display: inline-block; }
+    .zona-badge.almacen { background: #e8f0fe; color: #1e3a5f; }
+    .zona-badge.residencia { background: #fce8e6; color: #c1121f; }
+
+    /* HISTORIAL */
+    .hist-section-title { font-size: 15px; font-weight: 800; color: #1a2738; margin: 4px 0 10px; }
+    .hist-day { font-size: 11px; font-weight: 700; color: #8899aa; text-transform: uppercase; letter-spacing: 0.5px; margin: 14px 0 8px; padding-left: 4px; }
+    .mov-card { background: white; border-radius: 12px; padding: 11px 14px; margin-bottom: 7px; display: flex; align-items: center; gap: 12px; border: 1.5px solid #e8edf3; }
+    .mov-icon { font-size: 20px; width: 36px; text-align: center; flex-shrink: 0; }
+    .mov-info { flex: 1; min-width: 0; }
+    .mov-nombre { font-size: 14px; font-weight: 700; color: #1a2738; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .mov-detalle { font-size: 11px; color: #8899aa; margin-top: 2px; }
+    .mov-delta { font-size: 16px; font-weight: 800; flex-shrink: 0; }
+    .mov-delta.positivo { color: #2e7d32; }
+    .mov-delta.negativo { color: #c1121f; }
+    .mov-delta.neutro { color: #e07c24; }
+
+    /* CONSUMO RANKING */
+    .resumen-row { display: flex; align-items: center; gap: 10px; background: white; border-radius: 12px; padding: 10px 14px; margin-bottom: 6px; border: 1.5px solid #e8edf3; }
+    .resumen-nombre { font-size: 13px; font-weight: 600; color: #1a2738; min-width: 100px; max-width: 120px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .resumen-bar-wrap { flex: 1; background: #f0f4f8; border-radius: 4px; height: 8px; overflow: hidden; }
+    .resumen-bar { height: 8px; border-radius: 4px; background: var(--azul); }
+    .resumen-num { font-size: 13px; font-weight: 700; color: #c1121f; min-width: 50px; text-align: right; }
+
     /* TOAST */
     .toast { position: fixed; top: 60px; left: 50%; transform: translateX(-50%); background: #1a2738; color: white; padding: 10px 20px; border-radius: 20px; font-size: 13px; font-weight: 600; z-index: 500; box-shadow: 0 4px 16px rgba(0,0,0,0.25); white-space: nowrap; animation: toastIn 0.2s; }
     @keyframes toastIn { from { opacity: 0; transform: translateX(-50%) translateY(-8px); } to { opacity: 1; transform: translateX(-50%) translateY(0); } }
 
     /* INSTALL BANNER */
-    .install-banner { background: linear-gradient(135deg, #1e3a5f, #2e5490); color: white; padding: 12px 16px; display: flex; align-items: center; gap: 12px; cursor: pointer; }
+    .install-banner { background: linear-gradient(135deg, #1e3a5f, #2e5490); color: white; padding: 12px 16px; display: flex; align-items: center; gap: 12px; }
     .install-banner-text { flex: 1; font-size: 13px; line-height: 1.4; }
     .install-banner-text strong { display: block; font-size: 14px; }
     .install-banner-btn { background: white; color: var(--azul); border: none; border-radius: 8px; padding: 7px 14px; font-size: 13px; font-weight: 700; cursor: pointer; white-space: nowrap; touch-action: manipulation; }
@@ -128,46 +169,84 @@
 <div id="root"></div>
 
 <script type="text/babel">
-const { useState, useEffect, useRef } = React;
+const { useState, useEffect } = React;
 
 const STORAGE_KEY = 'inventario_zamakola_v2';
 const CATEGORIAS = ['Limpieza', 'Alimentación', 'Higiene', 'Oficina', 'Botiquín', 'Ropa/Textil', 'Otro'];
+const TIPOS_MOV = {
+  nuevo:     { icon: '✨', color: 'positivo' },
+  entrada:   { icon: '↑',  color: 'positivo' },
+  salida:    { icon: '↓',  color: 'negativo' },
+  traslado:  { icon: '📤', color: 'neutro'   },
+  eliminado: { icon: '🗑️', color: 'negativo' },
+};
 
 function loadData() {
-  try { const r = localStorage.getItem(STORAGE_KEY); if (r) return JSON.parse(r); } catch(e) {}
-  return { almacen: [], residencia: [] };
+  try {
+    const r = localStorage.getItem(STORAGE_KEY);
+    if (r) {
+      const d = JSON.parse(r);
+      if (!d.movimientos) d.movimientos = [];
+      return d;
+    }
+  } catch(e) {}
+  return { almacen: [], residencia: [], movimientos: [] };
 }
 function saveData(d) { try { localStorage.setItem(STORAGE_KEY, JSON.stringify(d)); } catch(e) {} }
 function uid() { return Date.now().toString(36) + Math.random().toString(36).slice(2,7); }
 
-// ── Registro del Service Worker ──────────────────────────────────────────────
-if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => {
-    navigator.serviceWorker.register('./sw.js').catch(() => {});
-  });
+function logMov(movs, tipo, nombre, zona, delta) {
+  return [...movs, { id: uid(), fecha: new Date().toISOString(), nombreProducto: nombre, zona, tipo, delta }];
 }
 
-// ── Toast ─────────────────────────────────────────────────────────────────────
+function formatHora(iso) {
+  return new Date(iso).toLocaleTimeString('es', { hour: '2-digit', minute: '2-digit' });
+}
+function formatFechaCorta(iso) {
+  const d = new Date(iso);
+  const hoy = new Date();
+  const ayer = new Date(); ayer.setDate(hoy.getDate() - 1);
+  if (d.toDateString() === hoy.toDateString()) return 'Hoy ' + formatHora(iso);
+  if (d.toDateString() === ayer.toDateString()) return 'Ayer ' + formatHora(iso);
+  return d.toLocaleDateString('es', { day: 'numeric', month: 'short' }) + ' · ' + formatHora(iso);
+}
+function formatDayLabel(iso) {
+  const d = new Date(iso);
+  const hoy = new Date();
+  const ayer = new Date(); ayer.setDate(hoy.getDate() - 1);
+  if (d.toDateString() === hoy.toDateString()) return 'Hoy';
+  if (d.toDateString() === ayer.toDateString()) return 'Ayer';
+  return d.toLocaleDateString('es', { weekday: 'long', day: 'numeric', month: 'long' });
+}
+
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => { navigator.serviceWorker.register('./sw.js').catch(() => {}); });
+}
+
 function Toast({ msg, onDone }) {
   useEffect(() => { const t = setTimeout(onDone, 2400); return () => clearTimeout(t); }, []);
   return <div className="toast">{msg}</div>;
 }
 
-// ── Tarjeta de producto ───────────────────────────────────────────────────────
-function ProductCard({ product, zona, onDelete, onTransfer, onQtyChange }) {
+function ProductCard({ product, zona, onDelete, onTransfer, onQtyChange, onFicha }) {
   const isLow = product.cantidad > 0 && product.cantidad <= 2;
   const isEmpty = product.cantidad === 0;
+  const tieneTotal = product.precioUnitario != null;
   return (
     <div className={`product-card${isLow || isEmpty ? ' low-stock' : ''}`}>
       <div className="product-header">
         <div style={{flex:1}}>
-          <div className="product-name">{product.nombre}</div>
+          <div className="product-name" onClick={() => onFicha(product)}>{product.nombre}</div>
           <div className="product-meta">
             <span className="product-category">{product.categoria}</span>
+            {tieneTotal && (
+              <span className="product-precio">{'💶 ' + Number(product.precioUnitario).toFixed(2) + ' €/ud.'}</span>
+            )}
             {(isLow || isEmpty) && <span className="low-badge">{isEmpty ? '⚠️ Sin stock' : '⚠️ Stock bajo'}</span>}
           </div>
         </div>
         <div className="product-actions-top">
+          <button className="btn-icon btn-info" onClick={() => onFicha(product)}>ℹ️</button>
           {zona === 'almacen' && (
             <button className="btn-icon btn-transfer" onClick={() => onTransfer(product)}>📤</button>
           )}
@@ -183,26 +262,32 @@ function ProductCard({ product, zona, onDelete, onTransfer, onQtyChange }) {
           </div>
           <button className="qty-btn plus" onClick={() => onQtyChange(product, 1)}>+</button>
         </div>
+        {tieneTotal && (
+          <div className="card-total">
+            Total: <span className="card-total-num">{(Number(product.precioUnitario) * product.cantidad).toFixed(2) + ' €'}</span>
+          </div>
+        )}
       </div>
     </div>
   );
 }
 
-// ── Modal: nuevo producto ─────────────────────────────────────────────────────
 function ModalNuevo({ zona, onClose, onSave }) {
   const [nombre, setNombre] = useState('');
   const [categoria, setCategoria] = useState(CATEGORIAS[0]);
   const [cantidad, setCantidad] = useState(1);
+  const [precio, setPrecio] = useState('');
   const [error, setError] = useState('');
   function save() {
     if (!nombre.trim()) { setError('Escribe el nombre del producto'); return; }
-    onSave({ nombre: nombre.trim(), categoria, cantidad });
+    const p = precio.trim() === '' ? null : parseFloat(precio.replace(',', '.'));
+    onSave({ nombre: nombre.trim(), categoria, cantidad, precioUnitario: (!p || isNaN(p)) ? null : p });
   }
   return (
     <div className="modal-overlay" onClick={e => e.target === e.currentTarget && onClose()}>
       <div className="modal">
         <div className="modal-handle" />
-        <div className="modal-title">Nuevo producto — {zona === 'almacen' ? '🏭 Almacén' : '🏠 Residencia'}</div>
+        <div className="modal-title">{'Nuevo producto — ' + (zona === 'almacen' ? '🏭 Almacén' : '🏠 Residencia')}</div>
         <div className="form-group">
           <label className="form-label">Nombre *</label>
           <input className="form-input" placeholder="Ej: Papel higiénico" value={nombre}
@@ -223,6 +308,11 @@ function ModalNuevo({ zona, onClose, onSave }) {
             <button className="qty-picker-btn plus" onClick={() => setCantidad(q => q+1)}>+</button>
           </div>
         </div>
+        <div className="form-group">
+          <label className="form-label">Precio unitario (€) — opcional</label>
+          <input className="form-input" type="number" min="0" step="0.01" placeholder="Ej: 1.50"
+            value={precio} onChange={e => setPrecio(e.target.value)} />
+        </div>
         <div className="btn-row">
           <button className="btn-secondary" onClick={onClose}>Cancelar</button>
           <button className="btn-primary" onClick={save}>Guardar</button>
@@ -232,7 +322,49 @@ function ModalNuevo({ zona, onClose, onSave }) {
   );
 }
 
-// ── Modal: trasladar ──────────────────────────────────────────────────────────
+function ModalFicha({ product, zona, onClose, onSave }) {
+  const [precio, setPrecio] = useState(product.precioUnitario != null ? String(product.precioUnitario) : '');
+  const precioNum = parseFloat(precio.replace(',', '.'));
+  const total = !isNaN(precioNum) && precioNum >= 0 ? precioNum * product.cantidad : null;
+  function save() {
+    const p = precio.trim() === '' ? null : parseFloat(precio.replace(',', '.'));
+    onSave({ ...product, precioUnitario: (isNaN(p) || p < 0) ? null : p });
+  }
+  return (
+    <div className="modal-overlay" onClick={e => e.target === e.currentTarget && onClose()}>
+      <div className="modal">
+        <div className="modal-handle" />
+        <div className="modal-title">📋 Ficha del producto</div>
+        <div className="ficha-product-name">{product.nombre}</div>
+        <div className="ficha-badges">
+          <span className="product-category">{product.categoria}</span>
+          <span className={'zona-badge ' + zona}>{zona === 'almacen' ? '🏭 Almacén' : '🏠 Residencia'}</span>
+          <span className="ficha-qty">{'× ' + product.cantidad + ' ud.'}</span>
+        </div>
+        <div className="form-group">
+          <label className="form-label">Precio unitario (€)</label>
+          <input className="form-input" type="number" min="0" step="0.01" placeholder="Ej: 1.50"
+            value={precio} onChange={e => setPrecio(e.target.value)} />
+        </div>
+        {total !== null && (
+          <div className="ficha-total-box">
+            <div className="ficha-total-label">Valor total en stock</div>
+            <div className="ficha-total-val">{total.toFixed(2) + ' €'}</div>
+            <div className="ficha-total-sub">{product.cantidad + ' × ' + precioNum.toFixed(2) + ' €/ud.'}</div>
+          </div>
+        )}
+        {product.fechaActualizacion && (
+          <div className="ficha-fecha">{'🕐 Última actualización: ' + formatFechaCorta(product.fechaActualizacion)}</div>
+        )}
+        <div className="btn-row">
+          <button className="btn-secondary" onClick={onClose}>Cerrar</button>
+          <button className="btn-primary" onClick={save}>Guardar precio</button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 function ModalTransferir({ product, onClose, onConfirm }) {
   const [cantidad, setCantidad] = useState(1);
   return (
@@ -242,7 +374,7 @@ function ModalTransferir({ product, onClose, onConfirm }) {
         <div className="modal-title">Trasladar a Residencia</div>
         <div className="transfer-info">
           Mover <strong>{product.nombre}</strong> del almacén a la residencia.<br/>
-          Disponible en almacén: <strong>{product.cantidad} ud.</strong>
+          {'Disponible en almacén: '}<strong>{product.cantidad + ' ud.'}</strong>
         </div>
         <div className="transfer-arrow">🏭 → 🏠</div>
         <div className="form-group">
@@ -262,7 +394,6 @@ function ModalTransferir({ product, onClose, onConfirm }) {
   );
 }
 
-// ── Modal: confirmar eliminar ─────────────────────────────────────────────────
 function ModalConfirmar({ product, onClose, onConfirm }) {
   return (
     <div className="modal-overlay" onClick={e => e.target === e.currentTarget && onClose()}>
@@ -270,7 +401,7 @@ function ModalConfirmar({ product, onClose, onConfirm }) {
         <div className="modal-handle" />
         <div className="confirm-icon">🗑️</div>
         <div className="modal-title" style={{textAlign:'center'}}>Eliminar producto</div>
-        <div className="confirm-text">¿Seguro que quieres eliminar <strong>"{product.nombre}"</strong>? Esta acción no se puede deshacer.</div>
+        <div className="confirm-text">{'¿Seguro que quieres eliminar '}<strong>{'"' + product.nombre + '"'}</strong>{'? Esta acción no se puede deshacer.'}</div>
         <div className="btn-row">
           <button className="btn-secondary" onClick={onClose}>Cancelar</button>
           <button className="btn-primary" style={{background:'#c1121f'}} onClick={onConfirm}>Eliminar</button>
@@ -280,7 +411,85 @@ function ModalConfirmar({ product, onClose, onConfirm }) {
   );
 }
 
-// ── App principal ─────────────────────────────────────────────────────────────
+function HistorialView({ movimientos }) {
+  const reversed = [...movimientos].reverse();
+
+  const groups = [];
+  const groupMap = {};
+  reversed.forEach(m => {
+    const dayKey = new Date(m.fecha).toDateString();
+    if (!groupMap[dayKey]) {
+      groupMap[dayKey] = { label: formatDayLabel(m.fecha), items: [] };
+      groups.push(groupMap[dayKey]);
+    }
+    groupMap[dayKey].items.push(m);
+  });
+
+  const consumoMap = {};
+  movimientos.forEach(m => {
+    if (m.tipo === 'salida' || (m.tipo === 'traslado' && m.zona === 'almacen')) {
+      consumoMap[m.nombreProducto] = (consumoMap[m.nombreProducto] || 0) + Math.abs(m.delta);
+    }
+  });
+  const consumoList = Object.entries(consumoMap).sort((a, b) => b[1] - a[1]).slice(0, 5);
+  const maxConsumo = consumoList.length > 0 ? consumoList[0][1] : 1;
+
+  return (
+    <div>
+      {consumoList.length > 0 && (
+        <div style={{marginBottom:20}}>
+          <div className="hist-section-title">📊 Más consumido</div>
+          {consumoList.map(function(entry) {
+            const nombre = entry[0];
+            const total = entry[1];
+            return (
+              <div key={nombre} className="resumen-row">
+                <div className="resumen-nombre">{nombre}</div>
+                <div className="resumen-bar-wrap">
+                  <div className="resumen-bar" style={{width: Math.round((total / maxConsumo) * 100) + '%'}} />
+                </div>
+                <div className="resumen-num">{'−' + total + ' ud.'}</div>
+              </div>
+            );
+          })}
+        </div>
+      )}
+
+      <div className="hist-section-title">📋 Movimientos</div>
+      {groups.length === 0 ? (
+        <div className="empty">
+          <div className="empty-icon">📋</div>
+          <div className="empty-text">Sin movimientos aún</div>
+          <div className="empty-sub">Los cambios en el inventario aparecerán aquí</div>
+        </div>
+      ) : groups.map(function(group) {
+        return (
+          <div key={group.label}>
+            <div className="hist-day">{group.label}</div>
+            {group.items.map(m => {
+              const t = TIPOS_MOV[m.tipo] || TIPOS_MOV.entrada;
+              const deltaStr = m.delta > 0 ? '+' + m.delta : String(m.delta);
+              return (
+                <div key={m.id} className="mov-card">
+                  <div className="mov-icon">{t.icon}</div>
+                  <div className="mov-info">
+                    <div className="mov-nombre">{m.nombreProducto}</div>
+                    <div className="mov-detalle">
+                      <span className={'zona-badge ' + m.zona}>{m.zona === 'almacen' ? '🏭 Almacén' : '🏠 Residencia'}</span>
+                      {' · ' + formatHora(m.fecha)}
+                    </div>
+                  </div>
+                  <div className={'mov-delta ' + t.color}>{deltaStr}</div>
+                </div>
+              );
+            })}
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
 function App() {
   const [data, setData] = useState(loadData);
   const [tab, setTab] = useState('almacen');
@@ -293,49 +502,82 @@ function App() {
 
   useEffect(() => { saveData(data); }, [data]);
 
-  // Capturar evento de instalación PWA
   useEffect(() => {
     const handler = e => { e.preventDefault(); setDeferredPrompt(e); setShowInstall(true); };
     window.addEventListener('beforeinstallprompt', handler);
     return () => window.removeEventListener('beforeinstallprompt', handler);
   }, []);
 
-  function toast$(msg) { setToast(msg); }
-
+  function showToast(msg) { setToast(msg); }
   function closeModal() { setModal(null); setSelected(null); }
 
   function addProduct(vals) {
-    setData(d => ({ ...d, [tab]: [...d[tab], { id: uid(), ...vals }] }));
+    const now = new Date().toISOString();
+    const newProduct = { id: uid(), fechaActualizacion: now, ...vals };
+    setData(d => ({
+      ...d,
+      [tab]: [...d[tab], newProduct],
+      movimientos: logMov(d.movimientos, 'nuevo', vals.nombre, tab, vals.cantidad),
+    }));
     closeModal();
-    toast$(`✅ ${vals.nombre} añadido`);
+    showToast('✅ ' + vals.nombre + ' añadido');
   }
 
   function deleteProduct() {
     const { zona, product } = selected;
-    setData(d => ({ ...d, [zona]: d[zona].filter(p => p.id !== product.id) }));
+    setData(d => ({
+      ...d,
+      [zona]: d[zona].filter(p => p.id !== product.id),
+      movimientos: logMov(d.movimientos, 'eliminado', product.nombre, zona, -product.cantidad),
+    }));
     closeModal();
-    toast$(`🗑️ ${product.nombre} eliminado`);
+    showToast('🗑️ ' + product.nombre + ' eliminado');
   }
 
   function changeQty(product, delta) {
+    const now = new Date().toISOString();
     setData(d => ({
       ...d,
-      [tab]: d[tab].map(p => p.id === product.id ? { ...p, cantidad: Math.max(0, p.cantidad + delta) } : p)
+      [tab]: d[tab].map(p => p.id === product.id
+        ? { ...p, cantidad: Math.max(0, p.cantidad + delta), fechaActualizacion: now }
+        : p
+      ),
+      movimientos: logMov(d.movimientos, delta > 0 ? 'entrada' : 'salida', product.nombre, tab, delta),
     }));
   }
 
   function transfer(cantidad) {
     const { product } = selected;
+    const now = new Date().toISOString();
     setData(d => {
-      const almacen = d.almacen.map(p => p.id === product.id ? { ...p, cantidad: p.cantidad - cantidad } : p);
+      const almacen = d.almacen.map(p => p.id === product.id
+        ? { ...p, cantidad: p.cantidad - cantidad, fechaActualizacion: now }
+        : p
+      );
       const existing = d.residencia.find(p => p.nombre.toLowerCase() === product.nombre.toLowerCase());
       const residencia = existing
-        ? d.residencia.map(p => p.id === existing.id ? { ...p, cantidad: p.cantidad + cantidad } : p)
-        : [...d.residencia, { ...product, id: uid(), cantidad }];
-      return { almacen, residencia };
+        ? d.residencia.map(p => p.id === existing.id
+            ? { ...p, cantidad: p.cantidad + cantidad, fechaActualizacion: now }
+            : p)
+        : [...d.residencia, { ...product, id: uid(), cantidad, fechaActualizacion: now }];
+      const movimientos = logMov(
+        logMov(d.movimientos, 'traslado', product.nombre, 'almacen', -cantidad),
+        'traslado', product.nombre, 'residencia', cantidad
+      );
+      return { almacen, residencia, movimientos };
     });
     closeModal();
-    toast$(`📤 ${cantidad} ud. de ${product.nombre} trasladadas`);
+    showToast('📤 ' + cantidad + ' ud. de ' + product.nombre + ' trasladadas');
+  }
+
+  function updateFicha(product) {
+    const zona = selected.zona;
+    setData(d => ({
+      ...d,
+      [zona]: d[zona].map(p => p.id === product.id ? product : p),
+    }));
+    closeModal();
+    showToast('💾 Ficha guardada');
   }
 
   async function handleInstall() {
@@ -346,24 +588,36 @@ function App() {
     setDeferredPrompt(null);
   }
 
-  const lista = data[tab].filter(p =>
+  const lastMov = data.movimientos.length > 0 ? data.movimientos[data.movimientos.length - 1] : null;
+  const headerSub = lastMov ? 'Actualizado: ' + formatFechaCorta(lastMov.fecha) : 'Gestión de stock';
+
+  const isInventTab = tab === 'almacen' || tab === 'residencia';
+
+  const lista = isInventTab ? data[tab].filter(p =>
     p.nombre.toLowerCase().includes(search.toLowerCase()) ||
     p.categoria.toLowerCase().includes(search.toLowerCase())
-  );
+  ) : [];
 
-  const stats = {
+  const lowAlmacen = data.almacen.filter(p => p.cantidad <= 2).length;
+  const lowResidencia = data.residencia.filter(p => p.cantidad <= 2).length;
+
+  const inventStats = isInventTab ? {
     productos: data[tab].length,
     unidades: data[tab].reduce((s, p) => s + p.cantidad, 0),
     bajos: data[tab].filter(p => p.cantidad <= 2).length,
-  };
-  const lowAlmacen = data.almacen.filter(p => p.cantidad <= 2).length;
-  const lowResidencia = data.residencia.filter(p => p.cantidad <= 2).length;
+  } : null;
+
+  const histStats = !isInventTab ? {
+    total: data.movimientos.length,
+    salidas: data.movimientos.filter(m => m.tipo === 'salida' || (m.tipo === 'traslado' && m.zona === 'almacen')).reduce((s, m) => s + Math.abs(m.delta), 0),
+    entradas: data.movimientos.filter(m => m.tipo === 'entrada' || m.tipo === 'nuevo' || (m.tipo === 'traslado' && m.zona === 'residencia')).reduce((s, m) => s + Math.abs(m.delta), 0),
+  } : null;
 
   return (
     <div className="app">
       <div className="header">
         <div className="header-title">📦 Inventario Zamakola</div>
-        <div className="header-sub">Gestión de stock</div>
+        <div className="header-sub">{headerSub}</div>
       </div>
 
       {showInstall && (
@@ -388,46 +642,75 @@ function App() {
           Residencia
           {lowResidencia > 0 && <span className="tab-badge">{lowResidencia}</span>}
         </div>
+        <div className={`tab${tab === 'historial' ? ' active' : ''}`} onClick={() => { setTab('historial'); setSearch(''); }}>
+          <span className="tab-icon">📊</span>
+          Historial
+        </div>
       </div>
 
       <div className="content">
-        <div className="stats-bar">
-          <div className="stat-chip">
-            <div className="stat-num">{stats.productos}</div>
-            <div className="stat-lbl">Productos</div>
+        {tab === 'historial' ? (
+          <div>
+            <div className="stats-bar">
+              <div className="stat-chip">
+                <div className="stat-num">{histStats.total}</div>
+                <div className="stat-lbl">Movimientos</div>
+              </div>
+              <div className="stat-chip rojo">
+                <div className="stat-num">{histStats.salidas}</div>
+                <div className="stat-lbl">Ud. salidas</div>
+              </div>
+              <div className="stat-chip verde">
+                <div className="stat-num">{histStats.entradas}</div>
+                <div className="stat-lbl">Ud. entradas</div>
+              </div>
+            </div>
+            <HistorialView movimientos={data.movimientos} />
           </div>
-          <div className="stat-chip">
-            <div className="stat-num">{stats.unidades}</div>
-            <div className="stat-lbl">Unidades</div>
-          </div>
-          <div className={`stat-chip${stats.bajos > 0 ? ' warn' : ''}`}>
-            <div className="stat-num">{stats.bajos}</div>
-            <div className="stat-lbl">Stock bajo</div>
-          </div>
-        </div>
+        ) : (
+          <div>
+            <div className="stats-bar">
+              <div className="stat-chip">
+                <div className="stat-num">{inventStats.productos}</div>
+                <div className="stat-lbl">Productos</div>
+              </div>
+              <div className="stat-chip">
+                <div className="stat-num">{inventStats.unidades}</div>
+                <div className="stat-lbl">Unidades</div>
+              </div>
+              <div className={`stat-chip${inventStats.bajos > 0 ? ' warn' : ''}`}>
+                <div className="stat-num">{inventStats.bajos}</div>
+                <div className="stat-lbl">Stock bajo</div>
+              </div>
+            </div>
 
-        <input className="search-input" placeholder="🔍  Buscar producto..." value={search}
-          onChange={e => setSearch(e.target.value)} />
+            <input className="search-input" placeholder="🔍  Buscar producto..." value={search}
+              onChange={e => setSearch(e.target.value)} />
 
-        {lista.length === 0 ? (
-          <div className="empty">
-            <div className="empty-icon">{search ? '🔍' : tab === 'almacen' ? '🏭' : '🏠'}</div>
-            <div className="empty-text">{search ? 'Sin resultados' : 'Sin productos aún'}</div>
-            <div className="empty-sub">{search ? 'Prueba con otro término' : 'Pulsa «+ Nuevo producto» para empezar'}</div>
+            {lista.length === 0 ? (
+              <div className="empty">
+                <div className="empty-icon">{search ? '🔍' : tab === 'almacen' ? '🏭' : '🏠'}</div>
+                <div className="empty-text">{search ? 'Sin resultados' : 'Sin productos aún'}</div>
+                <div className="empty-sub">{search ? 'Prueba con otro término' : 'Pulsa «+ Nuevo producto» para empezar'}</div>
+              </div>
+            ) : lista.map(product => (
+              <ProductCard key={product.id} product={product} zona={tab}
+                onDelete={p => { setSelected({ zona: tab, product: p }); setModal('eliminar'); }}
+                onTransfer={p => { setSelected({ zona: tab, product: p }); setModal('transferir'); }}
+                onQtyChange={changeQty}
+                onFicha={p => { setSelected({ zona: tab, product: p }); setModal('ficha'); }}
+              />
+            ))}
           </div>
-        ) : lista.map(product => (
-          <ProductCard key={product.id} product={product} zona={tab}
-            onDelete={p => { setSelected({ zona: tab, product: p }); setModal('eliminar'); }}
-            onTransfer={p => { setSelected({ zona: tab, product: p }); setModal('transferir'); }}
-            onQtyChange={changeQty}
-          />
-        ))}
+        )}
       </div>
 
-      
-      <button className="fab" onClick={() => setModal('nuevo')}>＋ Nuevo producto</button>
+      {tab !== 'historial' && (
+        <button className="fab" onClick={() => setModal('nuevo')}>＋ Nuevo producto</button>
+      )}
 
       {modal === 'nuevo'      && <ModalNuevo zona={tab} onClose={closeModal} onSave={addProduct} />}
+      {modal === 'ficha'      && selected && <ModalFicha product={selected.product} zona={selected.zona} onClose={closeModal} onSave={updateFicha} />}
       {modal === 'transferir' && selected && <ModalTransferir product={selected.product} onClose={closeModal} onConfirm={transfer} />}
       {modal === 'eliminar'   && selected && <ModalConfirmar product={selected.product} onClose={closeModal} onConfirm={deleteProduct} />}
       {toast && <Toast msg={toast} onDone={() => setToast(null)} />}
