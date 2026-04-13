@@ -424,6 +424,7 @@ function App() {
         ))}
       </div>
 
+      <!-- v1.0.1 -->
       <button className="fab" onClick={() => setModal('nuevo')}>＋ Nuevo producto</button>
 
       {modal === 'nuevo'      && <ModalNuevo zona={tab} onClose={closeModal} onSave={addProduct} />}
