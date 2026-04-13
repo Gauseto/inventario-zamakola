@@ -1,4 +1,4 @@
-const CACHE_NAME = 'inventario-zamakola-v2';
+const CACHE_NAME = 'inventario-zamakola-v4';
 const ASSETS = [
   './index.html',
   './manifest.json',
