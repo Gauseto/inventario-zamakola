@@ -7,9 +7,12 @@
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <meta name="apple-mobile-web-app-title" content="Inventario" />
-  <meta name="theme-color" content="#1e3a5f" />
+  <meta name="theme-color" content="#0d1f35" />
   <link rel="manifest" href="./manifest.json" />
   <link rel="apple-touch-icon" href="./icon-192.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap" rel="stylesheet" />
   <title>Inventario Zamakola</title>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
@@ -25,11 +28,12 @@
     .app { display: flex; flex-direction: column; min-height: 100vh; max-width: 480px; margin: 0 auto; background: var(--fondo); position: relative; }
 
     /* HEADER */
-    .header { background: var(--azul); color: white; padding: 52px 20px 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.2); }
-    .header-title { font-size: 20px; font-weight: 700; }
-    .header-sub { font-size: 11px; opacity: 0.7; margin-top: 2px; }
+    .header { background: linear-gradient(160deg, #0d1f35 0%, #1e3a5f 100%); color: white; padding: 44px 20px 12px; box-shadow: 0 2px 10px rgba(0,0,0,0.35); }
+    .header-brand { font-family: 'Dancing Script', cursive; font-size: 28px; color: white; line-height: 1.1; letter-spacing: 0.5px; }
+    .header-tagline { font-size: 10px; opacity: 0.55; letter-spacing: 1.5px; text-transform: uppercase; margin-top: 1px; margin-bottom: 5px; }
+    .header-sub { font-size: 11px; opacity: 0.75; margin-top: 2px; cursor: pointer; display: inline-flex; align-items: center; gap: 5px; }
 
-    /* TABS — 4 pestañas, fuente compacta */
+    /* TABS */
     .tabs { display: flex; background: white; border-bottom: 1px solid #dde2e8; position: sticky; top: 0; z-index: 99; }
     .tab { flex: 1; padding: 9px 2px; text-align: center; font-size: 10.5px; font-weight: 600; color: var(--gris); cursor: pointer; border-bottom: 3px solid transparent; user-select: none; min-width: 0; }
     .tab.active { color: var(--azul); border-bottom-color: var(--azul); }
@@ -72,26 +76,36 @@
     .btn-icon { border: none; border-radius: 8px; padding: 7px 9px; cursor: pointer; font-size: 15px; touch-action: manipulation; transition: transform 0.1s; }
     .btn-icon:active { transform: scale(0.9); }
     .btn-info { background: #e8f4ff; }
+    .btn-edit { background: #f0f7e8; }
     .btn-transfer { background: #fff3e0; }
     .btn-consume { background: #fff0f5; }
     .btn-delete { background: #fdeaea; }
     .product-footer { display: flex; align-items: center; }
-    .qty-control { display: flex; align-items: center; gap: 10px; }
+    .qty-control { display: flex; align-items: center; gap: 8px; }
     .qty-btn { width: 36px; height: 36px; border: none; border-radius: 8px; font-size: 22px; cursor: pointer; display: flex; align-items: center; justify-content: center; font-weight: 700; touch-action: manipulation; transition: transform 0.1s; }
     .qty-btn:active { transform: scale(0.88); }
     .qty-btn.minus { background: #f0f4f8; color: #1e3a5f; }
     .qty-btn.plus { background: var(--azul); color: white; }
     .qty-btn:disabled { opacity: 0.35; }
-    .qty-value { font-size: 22px; font-weight: 800; color: #1a2738; min-width: 34px; text-align: center; }
+    .qty-value { font-size: 20px; font-weight: 800; color: #1a2738; min-width: 44px; text-align: center; }
+    .qty-input { font-size: 20px; font-weight: 800; color: #1a2738; width: 52px; text-align: center; border: 1.5px solid #dde2e8; border-radius: 8px; padding: 4px 2px; background: #fafbfc; outline: none; }
+    .qty-input:focus { border-color: var(--azul); background: white; }
     .qty-label { font-size: 11px; color: #8899aa; }
     .card-total { margin-left: auto; text-align: right; font-size: 13px; color: #5a7090; font-weight: 600; }
     .card-total-num { color: var(--azul); font-weight: 800; }
 
-    /* CATÁLOGO CARD (sin footer de cantidad) */
-    .catalog-card { background: white; border-radius: 14px; padding: 14px 16px; margin-bottom: 10px; box-shadow: 0 1px 4px rgba(0,0,0,0.07); border: 1.5px solid #e8edf3; display: flex; align-items: center; gap: 12px; }
+    /* CATÁLOGO CARD */
+    .catalog-card { background: white; border-radius: 14px; padding: 14px 16px; margin-bottom: 10px; box-shadow: 0 1px 4px rgba(0,0,0,0.07); border: 1.5px solid #e8edf3; }
+    .catalog-card-header { display: flex; align-items: flex-start; gap: 12px; }
     .catalog-card-info { flex: 1; min-width: 0; }
     .catalog-card-name { font-size: 15px; font-weight: 700; color: #1a2738; }
     .catalog-card-meta { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 4px; }
+    .catalog-card-stats { display: flex; gap: 8px; margin-top: 10px; padding-top: 10px; border-top: 1px solid #f0f4f8; }
+    .catalog-stat { flex: 1; text-align: center; }
+    .catalog-stat-val { font-size: 15px; font-weight: 800; color: var(--azul); }
+    .catalog-stat-lbl { font-size: 10px; color: #8899aa; margin-top: 1px; }
+    .catalog-stat-val.rojo { color: #c1121f; }
+    .catalog-stat-val.naranja { color: #c77700; }
 
     /* FAB */
     .fab { position: fixed; bottom: 24px; right: calc(50% - 228px); background: var(--azul); color: white; border: none; border-radius: 28px; padding: 15px 26px; font-size: 15px; font-weight: 700; cursor: pointer; box-shadow: 0 4px 18px rgba(30,58,95,0.45); display: flex; align-items: center; gap: 8px; touch-action: manipulation; transition: transform 0.1s; z-index: 200; }
@@ -111,20 +125,28 @@
     .form-input:focus { border-color: var(--azul); background: white; }
     .form-select { width: 100%; padding: 12px 14px; border-radius: 12px; border: 1.5px solid #dde2e8; font-size: 15px; outline: none; color: #1a2738; background: #fafbfc; -webkit-appearance: none; }
     .form-error { color: #c1121f; font-size: 12px; margin-top: 4px; }
-    .qty-picker { display: flex; align-items: center; gap: 16px; }
-    .qty-picker-btn { width: 44px; height: 44px; border-radius: 12px; border: none; font-size: 24px; cursor: pointer; font-weight: 700; display: flex; align-items: center; justify-content: center; touch-action: manipulation; }
+    .qty-picker { display: flex; align-items: center; gap: 12px; }
+    .qty-picker-btn { width: 44px; height: 44px; border-radius: 12px; border: none; font-size: 24px; cursor: pointer; font-weight: 700; display: flex; align-items: center; justify-content: center; touch-action: manipulation; flex-shrink: 0; }
     .qty-picker-btn.minus { background: #f0f4f8; color: #1e3a5f; }
     .qty-picker-btn.plus { background: var(--azul); color: white; }
     .qty-picker-val { font-size: 24px; font-weight: 800; color: #1a2738; min-width: 38px; text-align: center; }
+    .qty-picker-input { font-size: 22px; font-weight: 800; color: #1a2738; width: 60px; text-align: center; border: 1.5px solid #dde2e8; border-radius: 10px; padding: 6px 4px; background: #fafbfc; outline: none; flex: 1; }
+    .qty-picker-input:focus { border-color: var(--azul); background: white; }
     .btn-row { display: flex; gap: 10px; margin-top: 8px; }
     .btn-primary { flex: 1; background: var(--azul); color: white; border: none; border-radius: 14px; padding: 15px; font-size: 16px; font-weight: 700; cursor: pointer; touch-action: manipulation; }
     .btn-primary:active { opacity: 0.85; }
+    .btn-primary:disabled { opacity: 0.4; }
     .btn-secondary { flex: 1; background: #f0f4f8; color: #5a7090; border: none; border-radius: 14px; padding: 15px; font-size: 16px; font-weight: 600; cursor: pointer; }
     .transfer-info { background: #fff8e1; border-radius: 12px; padding: 12px 14px; margin-bottom: 14px; border: 1px solid #ffe082; font-size: 13px; color: #8a6200; line-height: 1.5; }
     .consume-info { background: #fff0f5; border-radius: 12px; padding: 12px 14px; margin-bottom: 14px; border: 1px solid #f8c8d4; font-size: 13px; color: #8a0020; line-height: 1.5; }
     .transfer-arrow { text-align: center; font-size: 28px; margin: 6px 0 12px; }
     .confirm-icon { text-align: center; font-size: 46px; margin-bottom: 8px; }
     .confirm-text { text-align: center; font-size: 14px; color: #5a7090; margin-bottom: 18px; line-height: 1.5; }
+
+    /* TOGGLE MODO CONSUMO */
+    .modo-toggle { display: flex; gap: 8px; margin-bottom: 14px; }
+    .modo-btn { flex: 1; padding: 10px 8px; border-radius: 10px; border: 1.5px solid #dde2e8; font-size: 12px; font-weight: 600; cursor: pointer; text-align: center; transition: all 0.15s; background: #f0f4f8; color: #5a7090; }
+    .modo-btn.active { background: #c1121f; color: white; border-color: #c1121f; }
 
     /* FICHA MODAL */
     .ficha-product-name { font-size: 18px; font-weight: 800; color: #1a2738; margin-bottom: 8px; }
@@ -170,7 +192,7 @@
     .mov-del-btn:active { transform: scale(0.88); }
 
     /* INSTALL BANNER */
-    .install-banner { background: linear-gradient(135deg, #1e3a5f, #2e5490); color: white; padding: 12px 16px; display: flex; align-items: center; gap: 12px; }
+    .install-banner { background: linear-gradient(135deg, #0d1f35, #1e3a5f); color: white; padding: 12px 16px; display: flex; align-items: center; gap: 12px; }
     .install-banner-text { flex: 1; font-size: 13px; line-height: 1.4; }
     .install-banner-text strong { display: block; font-size: 14px; }
     .install-banner-btn { background: white; color: var(--azul); border: none; border-radius: 8px; padding: 7px 14px; font-size: 13px; font-weight: 700; cursor: pointer; white-space: nowrap; touch-action: manipulation; }
@@ -178,16 +200,19 @@
 
     /* SELECTED PRODUCT PREVIEW in modal */
     .selected-prod-preview { background: #f0f7ff; border-radius: 10px; padding: 10px 14px; margin-bottom: 14px; border: 1px solid #c8ddf5; display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+
+    /* STOCK MIN BADGE */
+    .stock-min-badge { font-size: 10px; color: #8a6200; background: #fff8e1; border-radius: 5px; padding: 2px 6px; border: 1px solid #ffe082; }
   </style>
 </head>
 <body>
 <div id="root"></div>
 
 <script type="text/babel">
-const { useState, useEffect } = React;
+const { useState, useEffect, useRef } = React;
 
 const STORAGE_KEY = 'inventario_zamakola_v2';
-const CATEGORIAS = ['Limpieza', 'Alimentación', 'Higiene', 'Oficina', 'Botiquín', 'Ropa/Textil', 'Otro'];
+const CATEGORIAS = ['Limpieza', 'Alimentación', 'Higiene', 'Oficina', 'Botiquin', 'Ropa/Textil', 'Otro'];
 const TIPOS_MOV = {
   nuevo:     { icon: '✨', color: 'positivo' },
   entrada:   { icon: '↑',  color: 'positivo' },
@@ -205,6 +230,11 @@ function loadData() {
       if (!d.movimientos) d.movimientos = [];
       if (!('fechaInventario' in d)) d.fechaInventario = null;
       if (!d.productos) d.productos = [];
+      // Migrar: añadir stockMinimo a productos del catálogo si no lo tienen
+      d.productos = d.productos.map(p => ({ stockMinimo: 2, ...p }));
+      // Migrar: añadir stockMinimo a items de almacén/residencia
+      d.almacen   = (d.almacen   || []).map(p => ({ stockMinimo: 2, ...p }));
+      d.residencia = (d.residencia || []).map(p => ({ stockMinimo: 2, ...p }));
       return d;
     }
   } catch(e) {}
@@ -237,6 +267,17 @@ function formatDayLabel(iso) {
   return d.toLocaleDateString('es', { weekday: 'long', day: 'numeric', month: 'long' });
 }
 
+// Calcula la media de consumo diario de un producto a partir de su historial
+function calcAvgDiario(movimientos, nombre) {
+  const consumos = movimientos.filter(m => m.tipo === 'consumo' && m.nombreProducto === nombre);
+  if (consumos.length === 0) return null;
+  const totalUds = consumos.reduce((s, m) => s + Math.abs(m.delta), 0);
+  const fechas = consumos.map(m => new Date(m.fecha).getTime());
+  const primera = Math.min(...fechas);
+  const dias = Math.max(1, (Date.now() - primera) / (1000 * 60 * 60 * 24));
+  return totalUds / dias;
+}
+
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => { navigator.serviceWorker.register('./sw.js').catch(() => {}); });
 }
@@ -247,10 +288,31 @@ function Toast({ msg, onDone }) {
 }
 
 /* ── ProductCard ────────────────────────────────────────── */
-function ProductCard({ product, zona, onDelete, onTransfer, onQtyChange, onFicha, onConsumir }) {
-  const isLow = product.cantidad > 0 && product.cantidad <= 2;
+function ProductCard({ product, zona, onDelete, onTransfer, onQtyChange, onQtySet, onFicha, onConsumir }) {
+  const stockMin = product.stockMinimo ?? 2;
+  const isLow = product.cantidad > 0 && product.cantidad <= stockMin;
   const isEmpty = product.cantidad === 0;
   const tieneTotal = product.precioUnitario != null;
+
+  const [inputVal, setInputVal] = useState(String(product.cantidad));
+  // Sync input when product.cantidad changes from outside
+  useEffect(() => { setInputVal(String(product.cantidad)); }, [product.cantidad]);
+
+  function handleInputChange(e) {
+    setInputVal(e.target.value);
+  }
+  function handleInputBlur() {
+    const val = parseInt(inputVal);
+    if (!isNaN(val) && val >= 0 && val !== product.cantidad) {
+      onQtySet(product, val);
+    } else {
+      setInputVal(String(product.cantidad));
+    }
+  }
+  function handleInputKeyDown(e) {
+    if (e.key === 'Enter') e.target.blur();
+  }
+
   return (
     <div className={`product-card${isLow || isEmpty ? ' low-stock' : ''}`}>
       <div className="product-header">
@@ -261,8 +323,9 @@ function ProductCard({ product, zona, onDelete, onTransfer, onQtyChange, onFicha
             {tieneTotal && (
               <span className="product-precio">{'💶 ' + Number(product.precioUnitario).toFixed(2) + ' €/ud.'}</span>
             )}
+            {(isLow || isEmpty) && (
+              <span className="low-badge">{isEmpty ? '⚠️ Sin stock' : '⚠️ Stock bajo'}</span>
             )}
-            {(isLow || isEmpty) && <span className="low-badge">{isEmpty ? '⚠️ Sin stock' : '⚠️ Stock bajo'}</span>}
           </div>
         </div>
         <div className="product-actions-top">
@@ -278,7 +341,15 @@ function ProductCard({ product, zona, onDelete, onTransfer, onQtyChange, onFicha
         <div className="qty-control">
           <button className="qty-btn minus" onClick={() => onQtyChange(product, -1)} disabled={product.cantidad <= 0}>−</button>
           <div style={{textAlign:'center'}}>
-            <div className="qty-value">{product.cantidad}</div>
+            <input
+              className="qty-input"
+              type="number"
+              min="0"
+              value={inputVal}
+              onChange={handleInputChange}
+              onBlur={handleInputBlur}
+              onKeyDown={handleInputKeyDown}
+            />
             <div className="qty-label">unidades</div>
           </div>
           <button className="qty-btn plus" onClick={() => onQtyChange(product, 1)}>+</button>
@@ -297,6 +368,7 @@ function ProductCard({ product, zona, onDelete, onTransfer, onQtyChange, onFicha
 function ModalNuevo({ zona, productos, onClose, onSave, onGoToCatalog }) {
   const [selectedId, setSelectedId] = useState(productos.length > 0 ? productos[0].id : '');
   const [cantidad, setCantidad] = useState(1);
+  const [inputCant, setInputCant] = useState('1');
   const [error, setError] = useState('');
 
   const selectedProd = productos.find(p => p.id === selectedId);
@@ -308,7 +380,14 @@ function ModalNuevo({ zona, productos, onClose, onSave, onGoToCatalog }) {
       categoria: selectedProd.categoria,
       cantidad,
       precioUnitario: selectedProd.precioUnitario,
+      stockMinimo: selectedProd.stockMinimo ?? 2,
     });
+  }
+
+  function handleCantBlur() {
+    const v = parseInt(inputCant);
+    if (!isNaN(v) && v >= 0) setCantidad(v);
+    else setInputCant(String(cantidad));
   }
 
   if (productos.length === 0) {
@@ -316,12 +395,12 @@ function ModalNuevo({ zona, productos, onClose, onSave, onGoToCatalog }) {
       <div className="modal-overlay" onClick={e => e.target === e.currentTarget && onClose()}>
         <div className="modal">
           <div className="modal-handle" />
-          <div className="modal-title">{'Añadir a ' + (zona === 'almacen' ? '🏭 Almacén' : '🏠 Residencia')}</div>
+          <div className="modal-title">{'Añadir a ' + (zona === 'almacen' ? '🏭 Almacìn' : '🏠 Residencia')}</div>
           <div style={{textAlign:'center', padding:'20px 0'}}>
             <div style={{fontSize:46, marginBottom:12}}>📦</div>
             <div style={{fontSize:15, fontWeight:700, color:'#1a2738', marginBottom:8}}>Catálogo vacío</div>
             <div style={{fontSize:13, color:'#5a7090', marginBottom:20, lineHeight:1.6}}>
-              Primero crea los productos en la pestaña <strong>Productos</strong> y luego podrás añadirlos aquí manteniendo siempre el mismo nombre.
+              Primero crea los productos en la pestaña <strong>Productos</strong> y luego podrás añadirlos aquí.
             </div>
           </div>
           <div className="btn-row">
@@ -351,14 +430,24 @@ function ModalNuevo({ zona, productos, onClose, onSave, onGoToCatalog }) {
             {selectedProd.precioUnitario != null && (
               <span className="product-precio">{'💶 ' + Number(selectedProd.precioUnitario).toFixed(2) + ' €/ud.'}</span>
             )}
+            {selectedProd.stockMinimo != null && selectedProd.stockMinimo !== 2 && (
+              <span className="stock-min-badge">{'Mín. stock: ' + selectedProd.stockMinimo}</span>
+            )}
           </div>
         )}
         <div className="form-group">
           <label className="form-label">Cantidad inicial</label>
           <div className="qty-picker">
-            <button className="qty-picker-btn minus" onClick={() => setCantidad(q => Math.max(0, q-1))}>−</button>
-            <span className="qty-picker-val">{cantidad}</span>
-            <button className="qty-picker-btn plus" onClick={() => setCantidad(q => q+1)}>+</button>
+            <button className="qty-picker-btn minus" onClick={() => { const v = Math.max(0, cantidad-1); setCantidad(v); setInputCant(String(v)); }}>−</button>
+            <input
+              className="qty-picker-input"
+              type="number"
+              min="0"
+              value={inputCant}
+              onChange={e => { setInputCant(e.target.value); const v = parseInt(e.target.value); if (!isNaN(v) && v >= 0) setCantidad(v); }}
+              onBlur={handleCantBlur}
+            />
+            <button className="qty-picker-btn plus" onClick={() => { const v = cantidad+1; setCantidad(v); setInputCant(String(v)); }}>+</button>
           </div>
         </div>
         <div className="btn-row">
@@ -375,11 +464,13 @@ function ModalNuevoProductoCatalog({ onClose, onSave }) {
   const [nombre, setNombre] = useState('');
   const [categoria, setCategoria] = useState(CATEGORIAS[0]);
   const [precio, setPrecio] = useState('');
+  const [stockMin, setStockMin] = useState('2');
   const [error, setError] = useState('');
   function save() {
     if (!nombre.trim()) { setError('Escribe el nombre del producto'); return; }
     const p = precio.trim() === '' ? null : parseFloat(precio.replace(',', '.'));
-    onSave({ nombre: nombre.trim(), categoria, precioUnitario: (!p || isNaN(p)) ? null : p });
+    const sm = parseInt(stockMin) || 2;
+    onSave({ nombre: nombre.trim(), categoria, precioUnitario: (!p || isNaN(p)) ? null : p, stockMinimo: sm });
   }
   return (
     <div className="modal-overlay" onClick={e => e.target === e.currentTarget && onClose()}>
@@ -399,9 +490,14 @@ function ModalNuevoProductoCatalog({ onClose, onSave }) {
           </select>
         </div>
         <div className="form-group">
-          <label className="form-label">Precio unitario (€) — opcional</label>
+          <label className="form-label">Precio unitario (€) — apcional</label>
           <input className="form-input" type="number" min="0" step="0.01" placeholder="Ej: 1.50"
             value={precio} onChange={e => setPrecio(e.target.value)} />
+        </div>
+        <div className="form-group">
+          <label className="form-label">Alerta stock bajo cuando queden ≤</label>
+          <input className="form-input" type="number" min="0" step="1" placeholder="2"
+            value={stockMin} onChange={e => setStockMin(e.target.value)} />
         </div>
         <div className="btn-row">
           <button className="btn-secondary" onClick={onClose}>Cancelar</button>
@@ -412,7 +508,63 @@ function ModalNuevoProductoCatalog({ onClose, onSave }) {
   );
 }
 
-/* ── ModalFicha ────────────────────────────────────── */
+/* ── ModalEditarProductoCatalog ─────────────────────────── */
+function ModalEditarProductoCatalog({ producto, onClose, onSave }) {
+  const [nombre, setNombre] = useState(producto.nombre);
+  const [categoria, setCategoria] = useState(producto.categoria || CATEGORIAS[0]);
+  const [precio, setPrecio] = useState(producto.precioUnitario != null ? String(producto.precioUnitario) : '');
+  const [stockMin, setStockMin] = useState(String(producto.stockMinimo ?? 2));
+  const [error, setError] = useState('');
+
+  function save() {
+    if (!nombre.trim()) { setError('El nombre no puede estar vacío'); return; }
+    const p = precio.trim() === '' ? null : parseFloat(precio.replace(',', '.'));
+    const sm = parseInt(stockMin);
+    onSave({
+      ...producto,
+      nombre: nombre.trim(),
+      categoria,
+      precioUnitario: (isNaN(p) || p < 0) ? null : p,
+      stockMinimo: isNaN(sm) || sm < 0 ? 2 : sm,
+    });
+  }
+  return (
+    <div className="modal-overlay" onClick={e => e.target === e.currentTarget && onClose()}>
+      <div className="modal">
+        <div className="modal-handle" />
+        <div className="modal-title">✏️ Editar producto</div>
+        <div className="form-group">
+          <label className="form-label">Nombre *</label>
+          <input className="form-input" value={nombre} onChange={e => { setNombre(e.target.value); setError(''); }} autoFocus />
+          {error && <div className="form-error">{error}</div>}
+        </div>
+        <div className="form-group">
+          <label className="form-label">Categoría</label>
+          <select className="form-select" value={categoria} onChange={e => setCategoria(e.target.value)}>
+            {CATEGORIAS.map(c => <option key={c}>{c}</option>)}
+          </select>
+        </div>
+        <div className="form-group">
+          <label className="form-label">Precio unitario (€) — opcional</label>
+          <input className="form-input" type="number" min="0" step="0.01" placeholder="Ej: 1.50"
+            value={precio} onChange={e => setPrecio(e.target.value)} />
+        </div>
+        <div className="form-group">
+          <label className="form-label">Alerta stock bajo cuando queden ≤</label>
+          <input className="form-input" type="number" min="0" step="1"
+            value={stockMin} onChange={e => setStockMin(e.target.value)} />
+          <div style={{fontSize:11, color:'#8899aa', marginTop:4}}>Los cambios se aplicarán también a los items en Almacìn y Residencia</div>
+        </div>
+        <div className="btn-row">
+          <button className="btn-secondary" onClick={onClose}>Cancelar</button>
+          <button className="btn-primary" onClick={save}>Guardar cambios</button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ── ModalFicha ─────────────────────────────────────────── */
 function ModalFicha({ product, zona, onClose, onSave }) {
   const [precio, setPrecio] = useState(product.precioUnitario != null ? String(product.precioUnitario) : '');
   const precioNum = parseFloat(precio.replace(',', '.'));
@@ -459,6 +611,7 @@ function ModalFicha({ product, zona, onClose, onSave }) {
 /* ── ModalTransferir ────────────────────────────────────── */
 function ModalTransferir({ product, onClose, onConfirm }) {
   const [cantidad, setCantidad] = useState(1);
+  const [inputCant, setInputCant] = useState('1');
   return (
     <div className="modal-overlay" onClick={e => e.target === e.currentTarget && onClose()}>
       <div className="modal">
@@ -472,9 +625,17 @@ function ModalTransferir({ product, onClose, onConfirm }) {
         <div className="form-group">
           <label className="form-label">Unidades a trasladar</label>
           <div className="qty-picker">
-            <button className="qty-picker-btn minus" onClick={() => setCantidad(q => Math.max(1, q-1))}>−</button>
-            <span className="qty-picker-val">{cantidad}</span>
-            <button className="qty-picker-btn plus" onClick={() => setCantidad(q => Math.min(product.cantidad, q+1))}>+</button>
+            <button className="qty-picker-btn minus" onClick={() => { const v = Math.max(1, cantidad-1); setCantidad(v); setInputCant(String(v)); }}>−</button>
+            <input
+              className="qty-picker-input"
+              type="number"
+              min="1"
+              max={product.cantidad}
+              value={inputCant}
+              onChange={e => { setInputCant(e.target.value); const v = parseInt(e.target.value); if (!isNaN(v) && v >= 1 && v <= product.cantidad) setCantidad(v); }}
+              onBlur={() => { const v = parseInt(inputCant); if (!isNaN(v) && v >= 1 && v <= product.cantidad) setCantidad(v); else setInputCant(String(cantidad)); }}
+            />
+            <button className="qty-picker-btn plus" onClick={() => { const v = Math.min(product.cantidad, cantidad+1); setCantidad(v); setInputCant(String(v)); }}>+</button>
           </div>
         </div>
         <div className="btn-row">
@@ -488,7 +649,45 @@ function ModalTransferir({ product, onClose, onConfirm }) {
 
 /* ── ModalConsumir ──────────────────────────────────────── */
 function ModalConsumir({ product, zona, onClose, onConfirm }) {
-  const [cantidad, setCantidad] = useState(1);
+  const [modo, setModo] = useState('consumido'); // 'consumido' | 'quedan'
+  const [valor, setValor] = useState(1);
+  const [inputVal, setInputVal] = useState('1');
+
+  const maxConsumir = product.cantidad;
+
+  // Unidades realmente consumidas según modo
+  const udsConsumidas = modo === 'consumido'
+    ? Math.max(0, Math.min(valor, maxConsumir))
+    : Math.max(0, maxConsumir - valor);
+
+  const isValid = udsConsumidas >= 1 && udsConsumidas <= maxConsumir;
+
+  function switchModo(nuevoModo) {
+    setModo(nuevoModo);
+    if (nuevoModo === 'consumido') { setValor(1); setInputVal('1'); }
+    else { setValor(maxConsumir); setInputVal(String(maxConsumir)); }
+  }
+
+  function setVal(v) {
+    const min = modo === 'consumido' ? 1 : 0;
+    const max = modo === 'consumido' ? maxConsumir : maxConsumir;
+    const clamped = Math.max(min, Math.min(max, v));
+    setValor(dlamped);
+    setInputVal(String(clamped));
+  }
+
+  function handleInputChange(e) {
+    setInputVal(e.target.value);
+    const v = parseInt(e.target.value);
+    if (!isNaN(v)) setValor(v);
+  }
+
+  function handleInputBlur() {
+    const v = parseInt(inputVal);
+    if (!isNaN(v)) setVal(v);
+    else setInputVal(String(valor));
+  }
+
   return (
     <div className="modal-overlay" onClick={e => e.target === e.currentTarget && onClose()}>
       <div className="modal">
@@ -496,19 +695,53 @@ function ModalConsumir({ product, zona, onClose, onConfirm }) {
         <div className="modal-title">🔥 Registrar consumo</div>
         <div className="consume-info">
           <strong>{product.nombre}</strong><br/>
-          {'Disponible en ' + (zona === 'almacen' ? 'almacìn' : 'residencia') + ': '}<strong>{product.cantidad + ' ud.'}</strong>
+          {'Disponible en ' + (zona === 'almacen' ? 'almacén' : 'residencia') + ': '}<strong>{maxConsumir + ' ud.'}</strong>
         </div>
+
+        <div className="modo-toggle">
+          <button className={'modo-btn' + (modo === 'consumido' ? ' active' : '')} onClick={() => switchModo('consumido')}>
+            Unidades consumidas
+          </button>
+          <button className={'modo-btn' + (modo === 'quedan' ? ' active' : '')} onClick={() => switchModo('quedan')}>
+            Unidades que quedan
+          </button>
+        </div>
+
         <div className="form-group">
-          <label className="form-label">Unidades consumidas</label>
+          <label className="form-label">
+            {modo === 'consumido' ? 'Cuántas se han consumido' : 'Cuántas quedan ahora'}
+          </label>
           <div className="qty-picker">
-            <button className="qty-picker-btn minus" onClick={() => setCantidad(q => Math.max(1, q-1))}>−</button>
-            <span className="qty-picker-val">{cantidad}</span>
-            <button className="qty-picker-btn plus" onClick={() => setCantidad(q => Math.min(product.cantidad, q+1))}>+</button>
+            <button className="qty-picker-btn minus" onClick={() => setVal(valor - 1)}>−</button>
+            <input
+              className="qty-picker-input"
+              type="number"
+              min={modo === 'consumido' ? 1 : 0}
+              max={maxConsumir}
+              value={inputVal}
+              onChange={handleInputChange}
+              onBlur={handleInputBlur}
+            />
+            <button className="qty-picker-btn plus" onClick={() => setVal(valor + 1)}>+</button>
           </div>
+          {modo === 'quedan' && udsConsumidas > 0 && (
+            <div style={{fontSize:12, color:'#c1121f', marginTop:8, textAlign:'center', fontWeight:600}}>
+              {'🔥 Se registrarán ' + udsConsumidas + ' ud. consumidas'}
+            </div>
+          )}
+          {!isValid && (
+            <div style={{fontSize:12, color:'#c1121f', marginTop:6, textAlign:'center'}}>
+              {modo === 'consumido' ? 'Máximo ' + maxConsumir + ' ud.' : 'No puede ser mayor que el stock actual'}
+            </div>
+          )}
         </div>
+
         <div className="btn-row">
           <button className="btn-secondary" onClick={onClose}>Cancelar</button>
-          <button className="btn-primary" style={{background:'#c1121f'}} onClick={() => onConfirm(cantidad)}>Consumir</button>
+          <button className="btn-primary" style={{background: isValid ? '#c1121f' : undefined}}
+            onClick={() => isValid && onConfirm(udsConsumidas)} disabled={!isValid}>
+            {'🔥 Consumir ' + (isValid ? udsConsumidas : '-') + ' ud.'}
+          </button>
         </div>
       </div>
     </div>
@@ -625,7 +858,7 @@ function ConsumoView({ movimientos, onDeleteMov }) {
                   <div className="mov-info">
                     <div className="mov-nombre">{m.nombreProducto}</div>
                     <div className="mov-detalle">
-                      <span className={'zona-badge ' + m.zona}>{m.zona === 'almacen' ? '🏭 Almacìn' : '🏠 Residencia'}</span>
+                      <span className={'zona-badge ' + m.zona}>{m.zona === 'almacen' ? '🏭 Almacén' : '🏠 Residencia'}</span>
                       {' · ' + formatHora(m.fecha)}
                     </div>
                   </div>
@@ -642,7 +875,7 @@ function ConsumoView({ movimientos, onDeleteMov }) {
 }
 
 /* ── ProductosView ──────────────────────────────────────── */
-function ProductosView({ productos, onDeleteProducto }) {
+function ProductosView({ productos, movimientos, almacen, residencia, onDeleteProducto, onEditarProducto }) {
   if (productos.length === 0) {
     return (
       <div className="empty">
@@ -654,20 +887,55 @@ function ProductosView({ productos, onDeleteProducto }) {
   }
   return (
     <div>
-      {productos.map(p => (
-        <div key={p.id} className="catalog-card">
-          <div className="catalog-card-info">
-            <div className="catalog-card-name">{p.nombre}</div>
-            <div className="catalog-card-meta">
-              <span className="product-category">{p.categoria}</span>
-              {p.precioUnitario != null && (
-                <span className="product-precio">{'💶 ' + Number(p.precioUnitario).toFixed(2) + ' €/ud.'}</span>
-              )}
+      {productos.map(p => {
+        const avg = calcAvgDiario(movimientos, p.nombre);
+        const enAlmacen  = almacen.filter(i => i.nombre === p.nombre).reduce((s, i) => s + i.cantidad, 0);
+        const enResidencia = residencia.filter(i => i.nombre === p.nombre).reduce((s, i) => s + i.cantidad, 0);
+        const totalStock = enAlmacen + enResidencia;
+
+        return (
+          <div key={p.id} className="catalog-card">
+            <div className="catalog-card-header">
+              <div className="catalog-card-info">
+                <div className="catalog-card-name">{p.nombre}</div>
+                <div className="catalog-card-meta">
+                  <span className="product-category">{p.categoria}</span>
+                  {p.precioUnitario != null && (
+                    <span className="product-precio">{'💶 ' + Number(p.precioUnitario).toFixed(2) + ' €/ud.'}</span>
+                  )}
+                  {(p.stockMinimo ?? 2) !== 2 && (
+                    <span className="stock-min-badge">{'Mín: ' + p.stockMinimo}</span>
+                  )}
+                </div>
+              </div>
+              <div style={{display:'flex', gap:6, flexShrink:0}}>
+                <button className="btn-icon btn-edit" onClick={() => onEditarProducto(p)} title="Editar">✏️</button>
+                <button className="btn-icon btn-delete" onClick={() => onDeleteProducto(p)} title="Eliminar del catálogo">🗑️</button>
+              </div>
+            </div>
+            <div className="catalog-card-stats">
+              <div className="catalog-stat">
+                <div className={'catalog-stat-val' + (totalStock === 0 ? ' naranja' : '')}>{totalStock}</div>
+                <div className="catalog-stat-lbl">Total stock</div>
+              </div>
+              <div className="catalog-stat">
+                <div className="catalog-stat-val" style={{fontSize:13, color:'#5a7090'}}>{enAlmacen}</div>
+                <div className="catalog-stat-lbl">🏭 Almacén</div>
+              </div>
+              <div className="catalog-stat">
+                <div className="catalog-stat-val" style={{fontSize:13, color:'#5a7090'}}>{enResidencia}</div>
+                <div className="catalog-stat-lbl">🏠 Residencia</div>
+              </div>
+              <div className="catalog-stat">
+                <div className={'catalog-stat-val rojo' + (!avg ? ' ' : '')} style={!avg ? {color:'#8899aa', fontSize:13} : {}}>
+                  {avg != null ? avg.toFixed(2) : '—'}
+                </div>
+                <div className="catalog-stat-lbl">ud/día</div>
+              </div>
             </div>
           </div>
-          <button className="btn-icon btn-delete" onClick={() => onDeleteProducto(p)} title="Eliminar del catálogo">🗑️</button>
-        </div>
-      ))}
+        );
+      })}
     </div>
   );
 }
@@ -724,6 +992,20 @@ function App() {
       ...d,
       [tab]: d[tab].map(p => p.id === product.id
         ? { ...p, cantidad: Math.max(0, p.cantidad + delta), fechaActualizacion: now }
+        : p
+      ),
+      movimientos: logMov(d.movimientos, delta > 0 ? 'entrada' : 'salida', product.nombre, tab, delta),
+    }));
+  }
+
+  function setQty(product, newVal) {
+    const delta = newVal - product.cantidad;
+    if (delta === 0) return;
+    const now = new Date().toISOString();
+    setData(d => ({
+      ...d,
+      [tab]: d[tab].map(p => p.id === product.id
+        ? { ...p, cantidad: Math.max(0, newVal), fechaActualizacion: now }
         : p
       ),
       movimientos: logMov(d.movimientos, delta > 0 ? 'entrada' : 'salida', product.nombre, tab, delta),
@@ -804,6 +1086,24 @@ function App() {
     showToast('🗑️ ' + product.nombre + ' eliminado del catálogo');
   }
 
+  function editarProductoCatalog(updatedProd) {
+    const oldNombre = selected.product.nombre;
+    setData(d => {
+      // Actualizar catálogo
+      const productos = d.productos.map(p => p.id === updatedProd.id ? updatedProd : p);
+      // Propagar cambios (nombre, categoría, precio, stockMinimo) a almacén y residencia
+      const propagate = items => items.map(p => {
+        if (p.nombre.toLowerCase() === oldNombre.toLowerCase()) {
+          return { ...p, nombre: updatedProd.nombre, categoria: updatedProd.categoria, precioUnitario: updatedProd.precioUnitario, stockMinimo: updatedProd.stockMinimo };
+        }
+        return p;
+      });
+      return { ...d, productos, almacen: propagate(d.almacen), residencia: propagate(d.residencia) };
+    });
+    closeModal();
+    showToast('✅ Producto actualizado');
+  }
+
   async function handleInstall() {
     if (!deferredPrompt) return;
     deferredPrompt.prompt();
@@ -826,13 +1126,14 @@ function App() {
     p.categoria.toLowerCase().includes(search.toLowerCase())
   ) : [];
 
-  const lowAlmacen = data.almacen.filter(p => p.cantidad <= 2).length;
-  const lowResidencia = data.residencia.filter(p => p.cantidad <= 2).length;
+  const stockMin = p => p.stockMinimo ?? 2;
+  const lowAlmacen    = data.almacen.filter(p => p.cantidad <= stockMin(p)).length;
+  const lowResidencia = data.residencia.filter(p => p.cantidad <= stockMin(p)).length;
 
   const inventStats = isInventTab ? {
     productos: data[tab].length,
     unidades: data[tab].reduce((s, p) => s + p.cantidad, 0),
-    bajos: data[tab].filter(p => p.cantidad <= 2).length,
+    bajos: data[tab].filter(p => p.cantidad <= stockMin(p)).length,
   } : null;
 
   const consumos = data.movimientos.filter(m => m.tipo === 'consumo');
@@ -845,9 +1146,10 @@ function App() {
   return (
     <div className="app">
       <div className="header">
-        <div className="header-title">📦 Inventario Zamakola</div>
-        <div className="header-sub" style={{cursor:'pointer', display:'inline-flex', alignItems:'center', gap:5}} onClick={() => setEditingDate(true)}>
-          {headerSub} <span style={{fontSize:10, opacity:0.65}}>✏️</span>
+        <div className="header-brand">Residencia Zamakola</div>
+        <div className="header-tagline">Cuidamos personas</div>
+        <div className="header-sub" onClick={() => setEditingDate(true)}>
+          {'📦 Inventario · ' + headerSub} <span style={{fontSize:10, opacity:0.65}}>✏️</span>
         </div>
       </div>
 
@@ -865,7 +1167,7 @@ function App() {
       <div className="tabs">
         <div className={`tab${tab === 'almacen' ? ' active' : ''}`} onClick={() => { setTab('almacen'); setSearch(''); }}>
           <span className="tab-icon">🏭</span>
-          Almacìn
+          Almacén
           {lowAlmacen > 0 && <span className="tab-badge">{lowAlmacen}</span>}
         </div>
         <div className={`tab${tab === 'residencia' ? ' active' : ''}`} onClick={() => { setTab('residencia'); setSearch(''); }}>
@@ -907,7 +1209,11 @@ function App() {
           <div>
             <ProductosView
               productos={data.productos}
+              movimientos={data.movimientos}
+              almacen={data.almacen}
+              residencia={data.residencia}
               onDeleteProducto={p => { setSelected({ product: p }); setModal('eliminarProducto'); }}
+              onEditarProducto={p => { setSelected({ product: p }); setModal('editarProducto'); }}
             />
           </div>
         ) : (
@@ -941,6 +1247,7 @@ function App() {
                 onDelete={p => { setSelected({ zona: tab, product: p }); setModal('eliminar'); }}
                 onTransfer={p => { setSelected({ zona: tab, product: p }); setModal('transferir'); }}
                 onQtyChange={changeQty}
+                onQtySet={setQty}
                 onFicha={p => { setSelected({ zona: tab, product: p }); setModal('ficha'); }}
                 onConsumir={p => { setSelected({ zona: tab, product: p }); setModal('consumir'); }}
               />
@@ -961,6 +1268,9 @@ function App() {
       )}
       {modal === 'nuevo' && tab === 'productos' && (
         <ModalNuevoProductoCatalog onClose={closeModal} onSave={addProductoCatalog} />
+      )}
+      {modal === 'editarProducto' && selected && (
+        <ModalEditarProductoCatalog producto={selected.product} onClose={closeModal} onSave={editarProductoCatalog} />
       )}
       {modal === 'ficha'      && selected && <ModalFicha product={selected.product} zona={selected.zona} onClose={closeModal} onSave={updateFicha} />}
       {modal === 'transferir' && selected && <ModalTransferir product={selected.product} onClose={closeModal} onConfirm={transfer} />}
