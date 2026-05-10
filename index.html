@@ -672,7 +672,7 @@ function ModalConsumir({ product, zona, onClose, onConfirm }) {
     const min = modo === 'consumido' ? 1 : 0;
     const max = modo === 'consumido' ? maxConsumir : maxConsumir;
     const clamped = Math.max(min, Math.min(max, v));
-    setValor(dlamped);
+    setValor(clamped);
     setInputVal(String(clamped));
   }
 
